@@ -20,10 +20,11 @@ pipeline {
         }
          
     }
+        // Below step is working fully 
      stage ('test'){
         steps {
             script {
-                def subfolders = sh(returnStdout: true, script: 'git diff --name-only $(git rev-parse --short HEAD^) $(git rev-parse --short HEAD) |egrep "us-non-prod-epic-realtalk|us-nonprod-devops-vault|us-nonprod-devops" | xargs dirname').trim().split(System.getProperty("line.separator"))
+                def subfolders = sh(returnStdout: true, script: 'git diff --name-only $(git rev-parse --short HEAD^) $(git rev-parse --short HEAD) |xargs dirname| egrep "us-non-prod-epic-realtalk|us-nonprod-devops-vault|us-nonprod-devops"').trim().split(System.getProperty("line.separator"))
                 for (int i = 0; i < subfolders.size(); ++i) {
                     echo "Testing the ${subfolders[i]} folder"
                     def SEC = "${subfolders[i].toString().toUpperCase()}-SECRET"
@@ -34,7 +35,7 @@ pipeline {
                 /*    sh 'terraform -v'
                     sh 'terraform init'
                     sh 'terraform validate'
-                    sh 'terraform plan -var subscription_id=b9f49eaf-9ae1-48af-b401-97c811418ee5 -var client_id=0b60c761-567c-4acc-be60-7e6717b2e029 -var client_secret=${var1} -var tenant_id=ff3213cc-c3f6-45d4-a104-8f7823656fec'
+                    
                     }
                    */
                     }
