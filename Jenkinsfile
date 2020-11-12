@@ -23,7 +23,7 @@ pipeline {
      stage ('test'){
         steps {
             script {
-                def subfolders = sh(returnStdout: true, script: 'git diff --name-only $(git rev-parse --short HEAD^) $(git rev-parse --short HEAD)  |xargs dirname').trim().split(System.getProperty("line.separator"))
+                def subfolders = sh(returnStdout: true, script: 'git diff --name-only $(git rev-parse --short HEAD^) $(git rev-parse --short HEAD) |egrep "us-non-prod-epic-realtalk|us-nonprod-devops-vault|us-nonprod-devops" | xargs dirname').trim().split(System.getProperty("line.separator"))
                 for (int i = 0; i < subfolders.size(); ++i) {
                     echo "Testing the ${subfolders[i]} folder"
                     def SEC = "${subfolders[i].toString().toUpperCase()}-SECRET"
